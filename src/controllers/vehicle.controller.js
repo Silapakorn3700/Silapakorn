@@ -65,22 +65,22 @@ if (!plateNumber) {
     status: 'error',
     message: 'Invalid request body',
     error: {
-      detail: 'name, email and password are required',
+      detail: 'plateNumber are required',
     },
   });
 }
   try {
-    const existsplateNumber = await prisma.user.findUnique({
+    const existsplateNumber = await prisma.vehicle.findUnique({
       where: { plateNumber }
     });
       if (existsplateNumber) {
       return  res.status(400).json({
-        status: 'error',
+        status: 'error',    
         message: 'plateNumber already exists',
       });
     }
 
-    const newVehicle = await prisma.user.create({
+    const newVehicle = await prisma.vehicle.create({
       data: {
         plateNumber,
         brand,
@@ -113,7 +113,7 @@ exports.updateVehicle = async (req, res) => {
   if (isNaN(vehicleId)) {
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid user id',
+      message: 'Invalid vehicle id',
     });
   }
 
@@ -145,7 +145,7 @@ exports.updateVehicle = async (req, res) => {
       data: updatedVehicle,
     });
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error('Error updating vehicle:', error);
 
     // Prisma error: record not found
     if (error.code === 'P2025') {
